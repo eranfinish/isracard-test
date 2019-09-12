@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>gitHub repos</title>
+
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.22/angular-ui-router.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.19/angular-ui-router.min.js"></script>-->
+    <script src="assets/js/index.js"></script>
+    <script src="assets/js/ngconfig.js"></script>
+</head>
+<bod ng-app="gitApp">
+  
+        <ui-view></ui-view>
+   
+    <!--<h1>Search for gitHub Repositories</h1>
+    <div ng-app="gitApp" ng-controller="mainCtrl" >
+        <div class="repo" ng-repeat="item in repos">
+            <div class="frame">
+                <img src="{{item.owner.avatar_url}}" />
+            </div>
+            <label><input type="checkbox" ng-model="item.check" ng-change="checkItem(item)"/></label>
+        </div>
+    </div>-->
+  
+</bod>
+</html>
