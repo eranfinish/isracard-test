@@ -1,15 +1,5 @@
 ﻿
-//angular.module("gitApp", []).factory('tradeFactory', function ($q) {
-//    var _ready = $q.defer();
-//    return {
-//        ready: function () {
-//            return _ready.promise;
-//        },
-//        ResolveReady: function () {
-//            _ready.resolve(1);
-//        }
-//    }
-//});
+
 
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider, $urlMatcherFactoryProvider) {
     //$locationProvider.html5Mode({
@@ -63,8 +53,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $com
                             headers: {
                                 "Content-Type": "application/json; charset=utf-8"
                             }
-                        };
-                        var data = item;
+                    };
+                    var data = JSON.stringify(item);
                         //$http.post("Default.aspx/BookmarkRepo", JSON.stringify(data), config).then(function (response) {
 
                         //}
@@ -84,43 +74,28 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $com
         url: '/home',
         templateUrl: 'assets/htmlTemplates/main.html',
       
-            })
-    //.state('event', {
-    //    name: 'event',
-    //    controller: 'RegisterController',
-    //    url: '/event/:formid/:typeid/:indexapp/:cycleid',
-    //    params: {
-    //        formid: { squash: true, value: null },
-    //        typeid: { squash: true, value: null },
-    //        indexapp: { squash: true, value: null },
-    //        cycleid: { squash: true, value: null }
-    //    },
-    //    templateUrl: 'Scripts/AngularJS/New/htmlTemplate/register.html?v=1.5',
-    //    resolve: {
-    //        cyclesResolved: function (myService, userService, $stateParams) {
+    }).state('bookmarked', {
+        controller: function ($scope, $http) {
+            $scope.bookmarks = {};
+            $http({
+                url: "Default.aspx/BookmarkRepo",
+                method: "POST",
+                data: { "obj": "Here" },
+                headers: { 'Content-Type': "application/json; charset=utf-8" }
+            }).then(function (response) {
+                if (response.data.d !== undefined) {
+                    $scope.bookmarks = JSON.parse(response.data.d);
+                    console.log(JSON.parse(response.data.d));
+                }
 
-    //            var formid = $stateParams.formid;
-    //            var cycleid = $stateParams.cycleid != undefined ? $stateParams.cycleid : '';
-    //            var typeid = $stateParams.typeid;
-    //            var indexapp = $stateParams.indexapp != undefined ? $stateParams.indexapp : '';
-    //            console.log("In Event Resolve");
+            
+            }
+            );
+        },
+        url: '/bookmarked',
+        templateUrl:'assets/htmlTemplates/bookmarked.html'
+    })
 
-    //            return myService.getFormCycles(formid, typeid, cycleid, indexapp);
-    //            //    .then(function (result) {
-    //            //       return result.data;
-    //            //});
-
-    //            //         return myService.getFormCycles(formid, typeid, cycleid, indexapp);
-    //        }  //},
-    //        //testData: function (Test) {
-
-    //        //    var datatest = Test.query();
-
-    //        //    return datatest.$promise;
-    //        //}ui
-
-    //    }
-    //})
 
 })
 
