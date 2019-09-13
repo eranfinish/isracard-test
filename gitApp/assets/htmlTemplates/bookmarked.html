@@ -1,0 +1,16 @@
+﻿<h2>Bookmarked Repositories</h2>
+<div>
+   
+    <div class="repo" ng-repeat="item in bookmarks  track by $index" >
+        <a href="{{item.url}}">
+
+
+            <div class="frame">
+                <img src="{{item.owner.avatar_url}}" />
+            </div>
+            <div class="name">
+                {{item.name}}
+            </div>
+        </a>
+    </div>
+</div>

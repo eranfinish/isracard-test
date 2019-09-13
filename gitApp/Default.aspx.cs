@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -30,29 +27,38 @@ public partial class _Default : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static void BookmarkRepo(object obj)
+    public static string BookmarkRepo(string obj)
     {
-        var list = (List<JObject>)HttpContext.Current.Session["bookmarks"];
-        if(list == null)
+        try
         {
-            list = new List<JObject>();
 
-        }
-        else
-        {
-            if(list.Exists(x=>x["id"] == (obj as JObject)["id"]))
+            var list = (List<Object>)HttpContext.Current.Session["bookmark"];
+            if (obj == "Here")
             {
-                list.Remove(x => x["id"] == (obj as JObject)["id"]);
+                return JsonConvert.SerializeObject(list);
             }
-        }
-        list.Add( obj as JObject);
-       HttpContext.Current.Session["bookmarks"] = list;
-        //       HttpContext.Current.Response.Write(list.Count);// Bookmarked.Add(obj);
-    }
+            if (list == null)
+            {
+                list = new List<Object>();
 
-    [WebMethod]
-    public static object GetBookmarks()
-    {
-        return Bookmarked;
+            }
+            else
+            {
+                //if(list.Exists(x=>x["id"] == (obj as JObject)["id"]))
+                //{
+                //  //  list.Remove(x => x["id"] == (obj as JObject)["id"]);
+                //}
+            }
+            var o = JsonConvert.DeserializeObject(obj);
+            list.Add(o);
+            HttpContext.Current.Session["bookmark"] = list;
+            //       HttpContext.Current.Response.Write(list.Count);// Bookmarked.Add(obj);
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+
+            return string.Empty;
+        }
     }
 }

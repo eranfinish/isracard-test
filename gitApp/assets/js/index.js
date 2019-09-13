@@ -4,11 +4,11 @@
         .then(function (response) {
             console.log(response.data);
             $scope.repos = response.data.items;
-            //console.log($scope.repos);
+           
         });
 
     $scope.checkItem = function (item) {
-        //  item["check"] = item["check"] ? false : true;
+     
         console.log(item.check);
         if (item.check) {
             var config = {
@@ -17,10 +17,6 @@
                 }
             };
             var data = item;
-            //$http.post("Default.aspx/BookmarkRepo", JSON.stringify(data), config).then(function (response) {
-
-            //}
-            //);
             $http({
                 url: "Default.aspx/BookmarkRepo",
                 method: "POST",

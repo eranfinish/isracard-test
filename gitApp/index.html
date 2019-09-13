@@ -12,19 +12,21 @@
     <script src="assets/js/index.js"></script>
     <script src="assets/js/ngconfig.js"></script>
 </head>
-<bod ng-app="gitApp">
-  
+<body ng-app="gitApp">
+    <h1>gitHub Repositoyies</h1>
+  <div class="tabs">
+      <ul>
+          <li>
+              <a ui-sref="home">Home</a>
+
+          </li>
+          <li>
+              <a ui-sref="bookmarked">Bookmarked</a>
+          </li>
+      </ul>
+  </div>
         <ui-view></ui-view>
-   
-    <!--<h1>Search for gitHub Repositories</h1>
-    <div ng-app="gitApp" ng-controller="mainCtrl" >
-        <div class="repo" ng-repeat="item in repos">
-            <div class="frame">
-                <img src="{{item.owner.avatar_url}}" />
-            </div>
-            <label><input type="checkbox" ng-model="item.check" ng-change="checkItem(item)"/></label>
-        </div>
-    </div>-->
+
   
-</bod>
+</body>
 </html>
