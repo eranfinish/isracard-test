@@ -1,0 +1,6 @@
+{
+    "start": "nodemon server.js",
+    "dependencies": {
+        "mongoose": "^5.9.12"
+    }
+}

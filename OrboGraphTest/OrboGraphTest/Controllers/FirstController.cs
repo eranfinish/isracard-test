@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 namespace OrboGraphTest.Controllers
 {
@@ -19,7 +20,7 @@ namespace OrboGraphTest.Controllers
     public class FirstController : Controller
     {
         [HttpGet("/GetXml/{location}")]
-        public async Task<IActionResult> GetXml(string location)
+        public string GetXml(string location)
         {
             var xml = String.Empty;
             try
@@ -92,72 +93,76 @@ namespace OrboGraphTest.Controllers
             string json = JsonConvert.SerializeXmlNode(doc);
 
             var data = ((JObject)JsonConvert.DeserializeObject(json))["RecoProfile"];
-            return Ok(JsonConvert.SerializeObject(data));
+            return JsonConvert.SerializeObject(data);
         }
-        [HttpPost("UpdateXml/{xml}/{location}/")]
-        public async Task<IActionResult> UpdateXml(string xml, string location)
+        [HttpPost("UpdateXml/{location}")]
+        public async Task<IActionResult> UpdateXml( string location, [FromBody]string json)
         {
-            xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
-<RecoProfile xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" Description=""Test profile""  ResultThreshold=""70"" TestMinAmount=""0"">
-"
             try
             {
-                // Open the text file using a stream reader.
-                using (var sr = new StreamReader(location))
+                XNode node = JsonConvert.DeserializeXNode(json, "RecoProfile");
+                var xml = @"<?xml version=""1.0"" encoding=""utf-8""?>";
+                var nodestr = xml + JsonConvert.SerializeXNode(node);
+                // nodestr = nodestr.Replace("root", "?xml");
+                // var nodeobj = JsonConvert.DeserializeXmlNode(nodestr);
+                XmlDocument xdoc = new XmlDocument();
+                if (!System.IO.File.Exists(location))
                 {
-                    // Read the stream as a string, and write the string to the console.
-                    xml = sr.ReadToEnd();
+                    System.IO.File.Create(location);
                 }
+                xdoc.LoadXml(nodestr);
+                xdoc.Save(location);
+
             }
-            catch (IOException e)
+            catch (IOException ex)
             {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+
+                return Problem(ex.Message);
             }
 
-                xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
-            <RecoProfile xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" Description=""Test profile""  ResultThreshold=""70"" TestMinAmount=""0"">
-            <Tests>
-            </Tests>
-            <MetaData>
-            <AllowedDocTypes>
-            <DocumentType Type=""BusinessCheck"" Required=""true""/>
-            <DocumentType Type=""PersonalCheck"" Required=""true""/>
-            <DocumentType Type=""MoneyOrder"" Required=""true""/>
-            <DocumentType Type=""Traveler'sCheck"" Required=""true""/>
-            </AllowedDocTypes>
-            <ValidPeriodDays Backward=""90"" DaysForward=""30""/>
-            <NewAccountPeriod>30</NewAccountPeriod>
-            <PayerBlackLists>
-            <ListType Name=""PayerBlackList"" Required=""true""/>
-            <ListType Name=""PayerWhiteList"" Required=""false""/>
-            </PayerBlackLists>
-            <AccountBlackLists>
-            <ListType Name=""AccountBlackList"" Required=""false""/>
-            <ListType Name=""AccountWhiteList"" Required=""false""/>
-            </AccountBlackLists>
-            </MetaData>
-            </RecoProfile>";
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xml);
+            //    xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            //<RecoProfile xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" Description=""Test profile""  ResultThreshold=""70"" TestMinAmount=""0"">
+            //<Tests>
+            //</Tests>
+            //<MetaData>
+            //<AllowedDocTypes>
+            //<DocumentType Type=""BusinessCheck"" Required=""true""/>
+            //<DocumentType Type=""PersonalCheck"" Required=""true""/>
+            //<DocumentType Type=""MoneyOrder"" Required=""true""/>
+            //<DocumentType Type=""Traveler'sCheck"" Required=""true""/>
+            //</AllowedDocTypes>
+            //<ValidPeriodDays Backward=""90"" DaysForward=""30""/>
+            //<NewAccountPeriod>30</NewAccountPeriod>
+            //<PayerBlackLists>
+            //<ListType Name=""PayerBlackList"" Required=""true""/>
+            //<ListType Name=""PayerWhiteList"" Required=""false""/>
+            //</PayerBlackLists>
+            //<AccountBlackLists>
+            //<ListType Name=""AccountBlackList"" Required=""false""/>
+            //<ListType Name=""AccountWhiteList"" Required=""false""/>
+            //</AccountBlackLists>
+            //</MetaData>
+            //</RecoProfile>";
+            //XmlDocument doc = new XmlDocument();
+            //doc.LoadXml(xml);
 
 
-            string json = JsonConvert.SerializeXmlNode(doc);
+            //string json =  JsonConvert.SerializeXmlNode(doc);
 
-            var data = ((JObject)JsonConvert.DeserializeObject(json))["RecoProfile"]["Tests"]["RecoTest"];
-            return Ok(JsonConvert.SerializeObject(data));
+            //var data = ((JObject)JsonConvert.DeserializeObject(json))["RecoProfile"];
+            return   Ok(JsonConvert.SerializeObject(json));
         }
 
 
     }
 
-    public class RecoTest
-    {
-        public string Type { get; set; }        
-        public bool Required { get; set; }
-        public int Threshhold { get; set; }
-        public int  MinTestAmount { get; set; }
-        public int  Weight { get; set; }
+    //public class RecoTest
+    //{
+    //    public string Type { get; set; }        
+    //    public bool Required { get; set; }
+    //    public int Threshhold { get; set; }
+    //    public int  MinTestAmount { get; set; }
+    //    public int  Weight { get; set; }
 
-    }
+    //}
 }

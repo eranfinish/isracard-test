@@ -1,0 +1,14 @@
+{
+  "name": "bcard-srevice",
+  "version": "0.0.0",
+  "description": "BCardSrevice",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "gatsby-cli": "^2.12.67",
+    "gatsby-dev-cli": "^2.7.16",
+    "gatsby-scaffolder": "^1.0.8"
+  }
+}

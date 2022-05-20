@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrboGraphTest", "OrboGraphTest\OrboGraphTest.csproj", "{9CE76417-71EC-4C0A-B4E7-03E7C23D3FD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrboGraphTest", "OrboGraphTest\OrboGraphTest.csproj", "{9CE76417-71EC-4C0A-B4E7-03E7C23D3FD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGClient", "OGClient\OGClient.csproj", "{C75299CA-A0EB-4689-9A08-8DC148413813}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9CE76417-71EC-4C0A-B4E7-03E7C23D3FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CE76417-71EC-4C0A-B4E7-03E7C23D3FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CE76417-71EC-4C0A-B4E7-03E7C23D3FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75299CA-A0EB-4689-9A08-8DC148413813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75299CA-A0EB-4689-9A08-8DC148413813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75299CA-A0EB-4689-9A08-8DC148413813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75299CA-A0EB-4689-9A08-8DC148413813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

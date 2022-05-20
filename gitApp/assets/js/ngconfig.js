@@ -1,6 +1,12 @@
-﻿
-
-
+﻿/*This File is to config a route to to the views */
+app.service("myService", [function () {
+    var data = {};
+    // TODO: optionally via HTML5 getter/setter way
+    return {
+        get: function (key) { return data[key]; },
+        set: function (key, newData) { data[key] = newData; }
+    };
+}]);
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider, $urlMatcherFactoryProvider) {
     //$locationProvider.html5Mode({
     //    enabled: true
@@ -13,19 +19,25 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $com
     $urlMatcherFactoryProvider.strictMode(false);
     $urlMatcherFactoryProvider.caseInsensitive(true);
   //  $locationProvider.hashPrefix('');
-    $urlRouterProvider.otherwise("/home");
-    $stateProvider.state('home', {
+    $urlRouterProvider.otherwise("/home");//Default view
+
+
+    $stateProvider.state('home', {// View for the search 
         
-        controller: function ($scope, $http) {
+        controller: function ($scope, $http, myService) {
+            $scope.search = myService.get("search") !== undefined ? myService.get("search") : "";
+
             $scope.getRepos = function () {
-                if ($scope.search.length > 2) {
+                if ($scope.search.length > 2) { //AJAX to server after 3 characters of input
 
 
 
                     $http.get("https://api.github.com/search/repositories?q=" + $scope.search)
                         .then(function (response) {
+                            myService.set("search", $scope.search);
                             console.log(response.data);
                             $scope.repos = response.data.items;
+                            myService.set("repos", $scope.repos);
                             //console.log($scope.repos);
                         });
                 }
@@ -37,23 +49,22 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $com
                 let res = "";
                 if (bm.indexOf("emptyBM.png") > -1) {
                     res = bm.replace("emptyBM.png","fullBM.png");
-                    // $scope.bmImage = "fullBM.png";
-                    checkItem(item);
                 }
                 else {
                    res =  bm.replace("fullBM.png","emptyBM.png" );
                 }
+                checkItem(item);
                 document.getElementById("bm_" + id).src = res;
             }
                 var checkItem = function (item) {
-                    //  item["check"] = item["check"] ? false : true;
+                 
                     console.log(item.check);
                    
-                        var config = {
-                            headers: {
-                                "Content-Type": "application/json; charset=utf-8"
-                            }
-                    };
+                    //    var config = {
+                    //        headers: {
+                    //            "Content-Type": "application/json; charset=utf-8"
+                    //        }
+                    //};
                     var data = JSON.stringify(item);
                         //$http.post("Default.aspx/BookmarkRepo", JSON.stringify(data), config).then(function (response) {
 
@@ -75,7 +86,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $com
         templateUrl: 'assets/htmlTemplates/main.html',
       
     }).state('bookmarked', {
-        controller: function ($scope, $http) {
+        controller: function ($scope, $http, myService) {
             $scope.bookmarks = {};
             $http({
                 url: "Default.aspx/BookmarkRepo",

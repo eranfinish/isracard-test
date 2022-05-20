@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Services;
 using Newtonsoft.Json;
@@ -37,6 +38,7 @@ public partial class _Default : System.Web.UI.Page
             {
                 return JsonConvert.SerializeObject(list);
             }
+            var o = JsonConvert.DeserializeObject(obj);
             if (list == null)
             {
                 list = new List<Object>();
@@ -44,12 +46,15 @@ public partial class _Default : System.Web.UI.Page
             }
             else
             {
-                //if(list.Exists(x=>x["id"] == (obj as JObject)["id"]))
+                if (list.Exists(x => (x as JObject)["id"].ToString() == (o as JObject)["id"].ToString()))
+                {
+                    var i = list.RemoveAll(x => (x as JObject)["id"].ToString() == (o as JObject)["id"].ToString());
+                }
                 //{
                 //  //  list.Remove(x => x["id"] == (obj as JObject)["id"]);
                 //}
             }
-            var o = JsonConvert.DeserializeObject(obj);
+           
             list.Add(o);
             HttpContext.Current.Session["bookmark"] = list;
             //       HttpContext.Current.Response.Write(list.Count);// Bookmarked.Add(obj);
